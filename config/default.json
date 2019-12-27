@@ -1,5 +1,0 @@
-{
-	"mongoURI":"mongodb+srv://lead:leadtest@cluster0-gdknf.mongodb.net/test?retryWrites=true&w=majority",
-	"APP_PORT":"5000",
-	"APP_HOST": "localhost" 
-}
