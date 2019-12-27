@@ -1,0 +1,5 @@
+{
+	"mongoURI":"sua-url-do-mongo",
+	"APP_PORT":"5000",
+	"APP_HOST": "localhost" 
+}
