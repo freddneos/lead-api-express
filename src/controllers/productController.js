@@ -1,122 +1,183 @@
-var userModel = require('../models/userModel.js');
+const productModel = require('../models/productModel.js');
+const categoryModel = require('../models/categoryModel.js');
+
+const { validationResult } = require('express-validator');
 
 /**
- * userController.js
+ * productController.js
  *
- * @description :: Server-side logic for managing users.
+ * @description :: Server-side logic for managing products.
  */
-module.exports = {
+class ProductController {
+
 
     /**
-     * userController.list()
+     * productController.list()
      */
-    list: function (req, res) {
-        userModel.find(function (err, users) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting user.',
-                    error: err
-                });
-            }
-            return res.json({users: users});
-        });
-    },
+    async list(req, res) {
+        try {
+            const products = await productModel.find().populate('category', 'name')
+            return res.json({ products: products });
+        } catch (e) {
+            return res.status(500).json({ error: e })
+        }
+    }
 
-    /**
-     * userController.show()
-     */
-    show: function (req, res) {
-        var id = req.params.id;
-        userModel.findOne({_id: id}, function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting user.',
-                    error: err
-                });
-            }
-            if (!user) {
-                return res.status(404).json({
-                    message: 'No such user'
-                });
-            }
-            return res.json(user);
-        });
-    },
-
-    /**
-     * userController.create()
-     */
-    create: function (req, res) {
-        var user = new userModel({
-			id : req.body.id,
-			name : req.body.name,
-			email : req.body.email,
-			password : req.body.password,
-			active : req.body.active
-
-        });
-
-        user.save(function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating user',
-                    error: err
-                });
-            }
-            return res.status(201).json(user);
-        });
-    },
-
-    /**
-     * userController.update()
-     */
-    update: function (req, res) {
-        var id = req.params.id;
-        userModel.findOne({_id: id}, function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting user',
-                    error: err
-                });
-            }
-            if (!user) {
-                return res.status(404).json({
-                    message: 'No such user'
-                });
-            }
-
-            user.id = req.body.id ? req.body.id : user.id;
-			user.name = req.body.name ? req.body.name : user.name;
-			user.email = req.body.email ? req.body.email : user.email;
-			user.password = req.body.password ? req.body.password : user.password;
-			user.active = req.body.active ? req.body.active : user.active;
-			
-            user.save(function (err, user) {
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Error when updating user.',
-                        error: err
-                    });
+    async find(req, res) {
+        const query = req.params.query
+        let products = [];
+        if (query.length <= 3) {
+            return res.status(400).json({ message: "At least 4 characters" });
+        }
+        try {
+            const productsByName = await productModel.find({ name: { $regex: query, $options: 'i' } })
+            if (productsByName.length == 0) {
+                const productsByDescription = await productModel.find({ description: { $regex: query, $options: 'i' } })
+                if (productsByDescription.length == 0) {
+                    return res.status(404).json({ message: "not found" });
+                } else {
+                    products = productsByDescription
                 }
+            } else {
+                products = productsByName;
+            }
+            res.status(200).json(products)
+        } catch (e) {
+            return res.status(500).json({ error: e })
+        }
 
-                return res.json(user);
-            });
-        });
-    },
+    }
 
     /**
-     * userController.remove()
+     * productController.show()
      */
-    remove: function (req, res) {
-        var id = req.params.id;
-        userModel.findByIdAndRemove(id, function (err, user) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when deleting the user.',
-                    error: err
+    async show(req, res) {
+        console.log(req.body);
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
+        }
+        const id = req.params.id;
+        try {
+            const product = await productModel.findOne({ _id: id })
+            if (!product) {
+                return res.status(404).json({
+                    message: 'No such product'
                 });
             }
+            return res.json(product);
+        } catch (e) {
+            return res.status(500).json({
+                message: 'Error when getting product.',
+                error: e
+            });
+        }
+    }
+
+    /**
+     * productController.create()
+     */
+    async create(req, res) {
+        console.log(req.body);
+        let category = {};
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
+        }
+
+        try {
+            category = await categoryModel.findOne({ _id: req.body.category_id })
+
+        } catch (e) {
+            console.log('error =>', e)
+            res.status(400).json({ errors: [{ msg: e }] })
+        }
+
+        const product = new productModel({
+            name: req.body.name,
+            description: req.body.description,
+            ean13: req.body.ean13,
+            //image: req.body.image,
+            blackstripe: req.body.blackstripe,
+            category: category
+        })
+        try {
+            const productSaved = await product.save()
+            return res.status(200).json({ product: productSaved })
+
+        } catch (e) {
+            res.status(400).json({ errors: [{ msg: e }] })
+        }
+    }
+
+    /**
+     * productController.update()
+     */
+    async update(req, res) {
+        const id = req.params.id;
+        let product = {}
+        console.log(id)
+        try {
+            product = await productModel.findOne({ _id: id })
+            console.log('product -> ', product)
+            if (!product) {
+                return res.status(404).json({
+                    message: 'No such product'
+                });
+            }
+        } catch (e) {
+            console.log('error->', e)
+            return res.status(500).json({
+                message: 'Error when getting product',
+                error: e
+            });
+        }
+        product.id = req.body.id ? req.body.id : product.id;
+        product.name = req.body.name ? req.body.name : product.name;
+        product.description = req.body.description ? req.body.description : product.description;
+        product.ean13 = req.body.ean13 ? req.body.ean13 : product.ean13;
+        product.category_id = req.body.category_id ? req.body.category_id : product.category_id;
+
+        try {
+            const category = await categoryModel.findOne({_id: req.body.category_id})
+            console.log('cat->',category)
+            if(!category){
+                return res.status(500).json({
+                    message: 'category not found',
+                });
+            }
+        }catch(e){
+            return res.status(500).json({
+                message: 'Error when getting category',
+                error: e
+            });
+        }
+
+        try {
+            const result = await product.save()
+            return res.json(result);
+        } catch (e) {
+            console.log('error -> ', e)
+            return res.status(500).json({
+                message: 'Error when updating product.',
+                error: e
+            });
+        }
+    }
+
+    /**
+     * productController.remove()
+     */
+    async remove(req, res) {
+        var id = req.params.id;
+        try {
+            const removed = await productModel.findByIdAndRemove(id)
             return res.status(204).json();
-        });
+        } catch (e) {
+            return res.status(500).json({
+                error: `Error when deleting the product.${e}`
+            });
+        }
     }
 };
+module.exports = new ProductController();
