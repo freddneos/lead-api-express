@@ -32,10 +32,10 @@ class uploadController {
         var newName = rand + req.files.file.name
         var newPlace = folder + newName
         var novo = newPlace;
-        console.log(config.get("APP_PORT") , req.hostname)
+        var host = process.env.APP_HOST || `http://${req.hostname}:${process.env.APP_PORT||5000}`
         try {
             await rename(temporario, novo)
-            product.image = `http://${req.hostname}:${process.env.APP_PORT||5000}/uploads/products/${newName}`;
+            product.image = `${host}/uploads/${newName}`;
             const editedProduct = await product.save()
             res.json({ message: "enviado com sucesso.", file: product.image });
         } catch (e) {
