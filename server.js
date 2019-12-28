@@ -29,6 +29,8 @@ if (process.env.NODE_ENV === "production") {
 
 } else {
     app.use('/files', express.static('uploads'));
+    app.use('/apidocs', express.static("docs"));
+
 }
 
 //connect to database

@@ -3,8 +3,8 @@ info:
   description: "lead farma API for dashbaord and campaign pages generated with expressjs"
   version: "1.0"
   title: "Lead Farma API"
-host: "https://lead-api-express.herokuapp.com"
-basePath: ""
+host: "lead-api-express.herokuapp.com"
+basePath: "/"
 tags:
 
 - name: "category"
@@ -20,7 +20,7 @@ tags:
   description: ""
 
 schemes:
-- "HTTP protocol"
+- "https"
 paths:
   /categories:
     get:
