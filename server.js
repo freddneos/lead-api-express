@@ -20,23 +20,29 @@ const user = require('./src/routes/api/user');
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use('/files',express.static('uploads',));
+
+if (process.env.NODE_ENV === "production") {
+    // Set static folder
+    app.use('/', express.static(path.resolve(__dirname, "build")));
+} else {
+    app.use('/files', express.static('uploads'));
+}
 
 //connect to database
 connectDB();
 
-app.get('/' , (req,res)=> res.send('API running , Hello world!'));
-app.use('/users' , user);
-app.use('/categories' , category);
-app.use('/upload' , upload )
+app.get('/', (req, res) => res.send('API running , Hello world!'));
+app.use('/users', user);
+app.use('/categories', category);
+app.use('/upload', upload)
 // app.use('/campaign' , campaign);
 // app.use('/campaign' , campaign);
 // app.use('/order' , order);
 // app.use('/shopcart' , shopcart);
- app.use('/products' , product);
+app.use('/products', product);
 // app.use('/auth' , auth);
 
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT , () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
