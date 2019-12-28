@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === "production") {
     // Set static folder
-    app.use('/files', express.static(path.resolve(__dirname, "build")));
+    app.use('/files', express.static(path.resolve(__dirname, "uploads")));
 } else {
     app.use('/files', express.static('uploads'));
 }

@@ -35,9 +35,13 @@ class uploadController {
         var newPlace = folder + 'products/'+ newName
         var novo = newPlace;
         var host = process.env.APP_HOST || `http://${req.hostname}:${process.env.APP_PORT||5000}`
+        var imgUrl = `${host}/${subfolder}${newName}`;
         try {
+            console.log('temp->',temporario)
+            console.log('new->',novo)
+            console.log('img->' , imgUrl)
             await rename(temporario, novo)
-            product.image = `${host}/${subfolder}${newName}`;
+            product.image = imgUrl;
             const editedProduct = await product.save()
             res.json({ message: "enviado com sucesso.", file: product.image });
         } catch (e) {
