@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const multiparty = require('connect-multiparty');
 const bodyParser = require('body-parser')
+const path = require('path')
 require('dotenv/config');
 
 
@@ -23,7 +24,7 @@ app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === "production") {
     // Set static folder
-    app.use('/', express.static(path.resolve(__dirname, "build")));
+    app.use('/files', express.static(path.resolve(__dirname, "build")));
 } else {
     app.use('/files', express.static('uploads'));
 }
