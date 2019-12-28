@@ -1,8 +1,9 @@
 const fs = require('fs');
 const productModel = require('../models/productModel')
 const util = require('util');
+const mv = require('mv')
 
-const rename = util.promisify(fs.rename);
+const rename = util.promisify(mv);
 
 class uploadController {
 
