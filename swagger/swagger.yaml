@@ -1,0 +1,116 @@
+swagger: "2.0"
+info:
+  description: "lead farma API for dashbaord and campaign pages generated with expressjs"
+  version: "1.0"
+  title: "Lead Farma API"
+host: "https://lead-api-express.herokuapp.com"
+basePath: ""
+tags:
+
+- name: "category"
+  description: ""
+
+- name: "user"
+  description: ""
+
+- name: "product"
+  description: ""
+
+- name: "upload"
+  description: ""
+
+schemes:
+- "HTTP protocol"
+paths:
+  /categories:
+    get:
+      tags:
+      - "category"
+      summary: "List categories"
+      responses:
+        200:
+          description: "successful operation"
+  /categories/:category_id:
+    get:
+      tags:
+      - "category"
+      summary: "Show a category"
+      responses:
+        200:
+          description: "successful operation"
+    delete:
+      tags:
+      - "category"
+      summary: "Delete a  category"
+      responses:
+        200:
+          description: "successful operation"
+  /users:
+    get:
+      tags:
+      - "user"
+      summary: "List Users"
+      responses:
+        200:
+          description: "successful operation"
+  /users/:user_id:
+    get:
+      tags:
+      - "user"
+      summary: "Show an user"
+      responses:
+        200:
+          description: "successful operation"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete an  user"
+      responses:
+        200:
+          description: "successful operation"
+  /products:
+    get:
+      tags:
+      - "product"
+      summary: "List product"
+      responses:
+        200:
+          description: "successful operation"
+  /products/:product_id:
+    put:
+      tags:
+      - "product"
+      summary: "Change product"
+      consumes:
+        - "application/json"
+      parameters:
+      - name: "Content-Type"
+        in: "header"
+        type: "string"
+        description: ""
+        required: true
+      responses:
+        200:
+          description: "successful operation"
+    get:
+      tags:
+      - "product"
+      summary: "Show a product"
+      responses:
+        200:
+          description: "successful operation"
+    delete:
+      tags:
+      - "product"
+      summary: "Delete a  product"
+      responses:
+        200:
+          description: "successful operation"
+  /products/search/:query:
+    get:
+      tags:
+      - "product"
+      summary: "Find products"
+      responses:
+        200:
+          description: "successful operation"
