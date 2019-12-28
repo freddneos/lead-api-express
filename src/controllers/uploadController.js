@@ -31,7 +31,7 @@ class uploadController {
         var temporario = req.files.file.path;
         var rand = Math.floor(Math.random() * 100000) + '_'
         var newName = rand + req.files.file.name
-        var newPlace = folder + '/products/'+ newName
+        var newPlace = folder + 'products/'+ newName
         var novo = newPlace;
         var host = process.env.APP_HOST || `http://${req.hostname}:${process.env.APP_PORT||5000}`
         try {
