@@ -1,5 +1,5 @@
 const contactModel = require('../models/contactModel.js');
-const {validationResult} = require('express-validator');
+const { validationResult } = require('express-validator');
 
 /**
  * contactController.js
@@ -27,8 +27,8 @@ class contactController {
     async show(req, res) {
         console.log(req.body);
         const errors = validationResult(req)
-        if(!errors.isEmpty()){
-            return res.status(400).json({errors:errors.array()})
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
         }
         const id = req.params.id;
         try {
@@ -39,7 +39,7 @@ class contactController {
                 });
             }
             return res.json(contact);
-        }catch(e){
+        } catch (e) {
             return res.status(500).json({
                 message: 'Error when getting contact.',
                 error: e
@@ -53,20 +53,39 @@ class contactController {
     async create(req, res) {
         console.log(req.body);
         const errors = validationResult(req)
-        if(!errors.isEmpty()){
-            return res.status(400).json({errors:errors.array()})
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
         }
         const contact = new contactModel({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,  
+            document: req.body.document,
+            whatsapp: req.body.whatsapp,
+            telegram: req.body.telegram,
+            sms: req.body.sms,
+            phone: req.body.phone,
+            level: req.body.level,
+            address: {
+                country: req.body.address.country,
+                zip_code: req.body.address.zip_code,
+                city: req.body.address.city,
+                district: req.body.address.district,
+                address: req.body.address.address,
+                number: req.body.address.number,
+                complement: req.body.address.complement,
+                reference: req.body.address.reference,
+                lat: req.body.address.lat,
+                long: req.body.address.long
+
+            }
+
         })
         try {
-           const  contactSaved = await contact.save()
-           return res.status(200).json({contact:contactSaved}) 
+            const contactSaved = await contact.save()
+            return res.status(200).json({ contact: contactSaved })
 
-        }catch(e){
-            res.status(400).json({errors:[{msg:e}]})
+        } catch (e) {
+            res.status(400).json({ errors: [{ msg: e }] })
         }
     }
 
@@ -117,7 +136,8 @@ class contactController {
             return res.status(204).json();
         } catch (e) {
             return res.status(500).json({
-                error: `Error when deleting the contact.${e}`            });
+                error: `Error when deleting the contact.${e}`
+            });
         }
     }
 };

@@ -16,6 +16,8 @@ const upload = require('./src/routes/api/upload');
 // const shopcart = require('./src/routes/api/shopcart');
 const category = require('./src/routes/api/category');
 const user = require('./src/routes/api/user');
+const contact = require('./src/routes/api/contact');
+
 
 
 app.use(express.json());
@@ -39,13 +41,15 @@ connectDB();
 app.get('/', (req, res) => res.send('API running , Hello world!'));
 app.use('/users', user);
 app.use('/categories', category);
-app.use('/upload', upload)
+app.use('/contacts' , contact);
+app.use('/products', product);
+
 // app.use('/campaign' , campaign);
 // app.use('/campaign' , campaign);
 // app.use('/order' , order);
 // app.use('/shopcart' , shopcart);
-app.use('/products', product);
 // app.use('/auth' , auth);
+app.use('/upload', upload)
 
 
 const PORT = process.env.PORT || 5000;

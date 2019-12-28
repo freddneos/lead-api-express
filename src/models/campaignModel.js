@@ -1,12 +1,39 @@
-var mongoose = require('mongoose');
-var Schema   = mongoose.Schema;
-
-var userSchema = new Schema({
-	'id' : Number,
-	'name' : String,
-	'email' : String,
-	'password' : String,
-	'active' : Boolean
+const mongoose = require('mongoose');
+const campaignSchema = new mongoose.Schema({
+	highlight: {
+		product: {type: mongoose.Schema.ObjectId, ref: 'product'},
+		price:String
+	},
+	recomended: [{
+		product: {type: mongoose.Schema.ObjectId, ref: 'product'},
+		price:String
+	}],
+	contacts:  [{
+		type: mongoose.Schema.ObjectId, ref: 'contact'
+	}],
+	startDate: {
+		type: Date,
+	},
+	endDate: {
+		type: Date
+	},
+	sms: {
+		type: Boolean
+	},
+	email: {
+		type: Boolean
+	},
+	whatsapp: {
+		type: Boolean
+	},
+	cost:{
+		type:String
+	},
+	enabled:{
+		type:Boolean
+	},
+	description:{
+		type:String
+	}
 });
-
-module.exports = mongoose.model('user', userSchema);
+module.exports = campaign = mongoose.model('campaign', campaignSchema);
