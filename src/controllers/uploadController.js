@@ -10,10 +10,11 @@ class uploadController {
         const type = req.body.type
         let product = {}
         let folder = "./uploads/"
+        let subfolder = ""
         if (type == 'product') {
             const product_id = req.body.product_id
             console.log(product_id)
-            folder = './uploads/products/'
+            subfolder = 'products/'
             try {
                 product = await productModel.findOne({ _id: product_id })
                 if (!product) {
@@ -30,12 +31,12 @@ class uploadController {
         var temporario = req.files.file.path;
         var rand = Math.floor(Math.random() * 100000) + '_'
         var newName = rand + req.files.file.name
-        var newPlace = folder + newName
+        var newPlace = folder + subfolder + newName
         var novo = newPlace;
         var host = process.env.APP_HOST || `http://${req.hostname}:${process.env.APP_PORT||5000}`
         try {
             await rename(temporario, novo)
-            product.image = `${host}/uploads/${newName}`;
+            product.image = `${host}/${subfolder}${newName}`;
             const editedProduct = await product.save()
             res.json({ message: "enviado com sucesso.", file: product.image });
         } catch (e) {
