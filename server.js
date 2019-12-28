@@ -20,7 +20,7 @@ const user = require('./src/routes/api/user');
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('uploads'));
+app.use('/files',express.static('uploads',));
 
 //connect to database
 connectDB();
