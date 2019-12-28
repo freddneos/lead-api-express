@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const multiparty = require('connect-multiparty');
 const bodyParser = require('body-parser')
+require('dotenv/config');
+
 
 const connectDB = require('./config/database');
 // const auth = require('./src/routes/api/auth');

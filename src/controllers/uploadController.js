@@ -1,7 +1,6 @@
 const fs = require('fs');
 const productModel = require('../models/productModel')
 const util = require('util');
-const config = require('config')
 
 const rename = util.promisify(fs.rename);
 
@@ -36,7 +35,7 @@ class uploadController {
         console.log(config.get("APP_PORT") , req.hostname)
         try {
             await rename(temporario, novo)
-            product.image = `http://${req.hostname}:${config.get('APP_PORT')}/uploads/products/${newName}`;
+            product.image = `http://${req.hostname}:${process.env.APP_PORT||5000}/uploads/products/${newName}`;
             const editedProduct = await product.save()
             res.json({ message: "enviado com sucesso.", file: product.image });
         } catch (e) {
