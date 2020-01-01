@@ -17,6 +17,42 @@ router.get('/:id', campaignController.show);
  */
 router.post('/', campaignController.create);
 
+
+/*
+ * POST
+ */
+router.post('/highlight/:campaign_id', campaignController.addHighlight);
+
+
+/*
+ * POST
+//  */
+// router.post('/recomended/:campaign_id', campaignController.addRecomended);
+
+
+// /*
+//  * POST
+//  */
+// router.post('/contacts/:campaign_id', campaignController.addContact);
+
+
+// /*
+//  * DELETE
+//  */
+// router.delete('/highlight/:campaign_id', campaignController.delHighlight);
+
+
+// /*
+//  * DELETE
+//  */
+// router.delete('/recomended/:campaign_id', campaignController.delRecomended);
+
+
+// /*
+//  * DELETE
+//  */
+// router.delete('/contacts/:campaign_id', campaignController.delContact);
+
 /*
  * PUT
  */

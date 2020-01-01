@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const campaignSchema = new mongoose.Schema({
-	highlight: {
+	highlight: [{
 		product: {type: mongoose.Schema.ObjectId, ref: 'product'},
 		price:String
-	},
+	}],
 	recomended: [{
 		product: {type: mongoose.Schema.ObjectId, ref: 'product'},
 		price:String
@@ -34,6 +34,10 @@ const campaignSchema = new mongoose.Schema({
 	},
 	description:{
 		type:String
+	},
+	name:{
+		type:String,
+		required:true
 	}
 });
 module.exports = campaign = mongoose.model('campaign', campaignSchema);
