@@ -8,7 +8,7 @@ require('dotenv/config');
 
 const connectDB = require('./config/database');
 // const auth = require('./src/routes/api/auth');
-// const campaign = require('./src/routes/api/campaign');
+const campaign = require('./src/routes/api/campaign');
 // const order = require('./src/routes/api/order');
 const product = require('./src/routes/api/product');
 const upload = require('./src/routes/api/upload');
@@ -43,9 +43,7 @@ app.use('/users', user);
 app.use('/categories', category);
 app.use('/contacts' , contact);
 app.use('/products', product);
-
-// app.use('/campaign' , campaign);
-// app.use('/campaign' , campaign);
+app.use('/campaigns' , campaign);
 // app.use('/order' , order);
 // app.use('/shopcart' , shopcart);
 // app.use('/auth' , auth);

@@ -1,30 +1,30 @@
 var express = require('express');
 var router = express.Router();
-var userController = require('../controllers/userController.js');
+var campaignController = require('../../controllers/campaignController.js');
 
 /*
  * GET
  */
-router.get('/', userController.list);
+router.get('/', campaignController.list);
 
 /*
  * GET
  */
-router.get('/:id', userController.show);
+router.get('/:id', campaignController.show);
 
 /*
  * POST
  */
-router.post('/', userController.create);
+router.post('/', campaignController.create);
 
 /*
  * PUT
  */
-router.put('/:id', userController.update);
+router.put('/:id', campaignController.update);
 
 /*
  * DELETE
  */
-router.delete('/:id', userController.remove);
+router.delete('/:id', campaignController.remove);
 
 module.exports = router;
