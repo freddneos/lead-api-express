@@ -1,3 +1,4 @@
+const contactModel = require('../models/contactModel.js');
 const campaignModel = require('../models/campaignModel.js');
 const productModel = require('../models/productModel.js');
 
@@ -111,17 +112,28 @@ class campaignController {
 
     async addHighlight(req, res) {
         const id = req.params.campaign_id;
+        let { highlight } = req.body
+        let highArr = [];
         let campaign = {}
         try {
             campaign = await campaignModel.findOne({ _id: id })
-            console.log('campaign -> ', campaign)
             if (!campaign) {
                 return res.status(404).json({
                     message: 'No such campaign'
                 });
             }
+
+            if (campaign.highlight.length > 0) {
+                const promise = campaign.highlight.map(async element => {
+                    const found = await highlight.findIndex(product => product.product === element.product.toString())
+                    if (found !== undefined && found !== -1) {
+                        highlight.splice(found, 1)
+                    }
+                });
+
+                await Promise.all(promise)
+            }
         } catch (e) {
-            console.log('error->', e)
             return res.status(500).json({
                 message: 'Error when getting campaign',
                 error: e
@@ -133,35 +145,274 @@ class campaignController {
         //     return res.status(400).json({ errors: errors.array() })
         // }
 
-        const { highlight } = req.body
-
-        highlight.forEach(async item => {
-            console.log('item -> ', item)
+        const promises = highlight.map(async item => {
             try {
-                const product = await productModel.findOne({ id: item.product })
-               
-                if (!product){
-                    console.log('produto não existe!')
-                }else{
+                const product = await productModel.findOne({ _id: item.product })
+                if (!product) {
+                } else {
                     item.product = product._id;
                 }
-                campaign.highlight.push(item)
+                highArr.push(item)
 
-            } catch (e) {
-                console.log('erro no add product',e)
-                return true
+            } catch (error) {
+                console.log(`product ${item.product} not found`)
             }
         })
+        await Promise.all(promises);
+
+        campaign.highlight.push(...highArr)
 
         try {
             const campaignSaved = await campaign.save()
-            campaignSaved.populate('product')
             return res.status(200).json({ campaign: campaignSaved })
 
+
+        } catch (error) {
+            return res.status(400).json({ error })
+
+        }
+
+    }
+
+
+
+    async delHighlight(req, res) {
+        const id = req.params.campaign_id;
+        let { highlight } = req.body
+        let highArr = [];
+        let campaign = {}
+        try {
+            campaign = await campaignModel.findOne({ _id: id })
+            if (!campaign) {
+                return res.status(404).json({
+                    message: 'No such campaign'
+                });
+            }
+
+            if (campaign.highlight.length > 0) {
+                const promise = highlight.map(async element => {
+                    const found = await campaign.highlight.findIndex(product => product.product.toString() === element.product.toString())
+                    if (found !== undefined && found !== -1) {
+                        campaign.highlight.splice(found, 1)
+                    }
+                });
+                await Promise.all(promise)
+                const campaignSaved = await campaign.save()
+                return res.status(200).json({ campaign: campaignSaved })
+            }
         } catch (e) {
-            res.status(400).json({ errors: [{ msg: e }] })
+            return res.status(500).json({
+                message: 'Error when getting campaign',
+                error: e
+            });
         }
     }
+
+
+
+
+    async addRecomended(req, res) {
+        const id = req.params.campaign_id;
+        let { recomended } = req.body
+        let recoArr = [];
+        let campaign = {}
+        try {
+            campaign = await campaignModel.findOne({ _id: id })
+            if (!campaign) {
+                return res.status(404).json({
+                    message: 'No such campaign'
+                });
+            }
+
+            if (campaign.recomended.length > 0) {
+                const promise = campaign.recomended.map(async element => {
+                    const found = await recomended.findIndex(product => product.product === element.product.toString())
+                    if (found !== undefined && found !== -1) {
+                        recomended.splice(found, 1)
+                    }
+                });
+
+                await Promise.all(promise)
+            }
+        } catch (e) {
+            return res.status(500).json({
+                message: 'Error when getting campaign',
+                error: e
+            });
+        }
+
+        // const errors = validationResult(req)
+        // if (!errors.isEmpty()) {
+        //     return res.status(400).json({ errors: errors.array() })
+        // }
+
+        const promises = recomended.map(async item => {
+            try {
+                const product = await productModel.findOne({ _id: item.product })
+                if (!product) {
+                } else {
+                    item.product = product._id;
+                }
+                recoArr.push(item)
+
+            } catch (error) {
+                console.log(`product ${item.product} not found`)
+            }
+        })
+        await Promise.all(promises);
+
+        campaign.recomended.push(...recoArr)
+
+        try {
+            const campaignSaved = await campaign.save()
+            return res.status(200).json({ campaign: campaignSaved })
+
+
+        } catch (error) {
+            return res.status(400).json({ error })
+
+        }
+
+    }
+
+
+
+    async delRecomended(req, res) {
+        const id = req.params.campaign_id;
+        let { recomended } = req.body
+        let highArr = [];
+        let campaign = {}
+        try {
+            campaign = await campaignModel.findOne({ _id: id })
+            if (!campaign) {
+                return res.status(404).json({
+                    message: 'No such campaign'
+                });
+            }
+
+            if (campaign.recomended.length > 0) {
+                const promise = recomended.map(async element => {
+                    const found = await campaign.recomended.findIndex(product => product.product.toString() === element.product.toString())
+                    if (found !== undefined && found !== -1) {
+                        campaign.recomended.splice(found, 1)
+                    }
+                });
+                await Promise.all(promise)
+                const campaignSaved = await campaign.save()
+                return res.status(200).json({ campaign: campaignSaved })
+            }
+        } catch (e) {
+            return res.status(500).json({
+                message: 'Error when getting campaign',
+                error: e
+            });
+        }
+    }
+
+    async addContact(req, res) {
+        const id = req.params.campaign_id;
+        let { contact } = req.body
+        let contactArr = [];
+        let campaign = {}
+        try {
+            campaign = await campaignModel.findOne({ _id: id })
+            if (!campaign) {
+                return res.status(404).json({
+                    message: 'No such campaign'
+                });
+            }
+
+            if (campaign.contacts.length > 0) {
+                console.log('chegou aqui')
+                const promise = campaign.contacts.map(async element => {
+                    const found = await contact.findIndex(contact => contact === element.toString())
+                    if (found !== undefined && found !== -1) {
+                        contact.splice(found, 1)
+                    }
+                });
+                4
+                await Promise.all(promise)
+            }
+        } catch (e) {
+            return res.status(500).json({
+                message: 'Error when getting campaign',
+                error: e
+            });
+        }
+
+        // const errors = validationResult(req)
+        // if (!errors.isEmpty()) {
+        //     return res.status(400).json({ errors: errors.array() })
+        // }
+
+        const promises = contact.map(async item => {
+            try {
+                const contact = await contactModel.findOne({ _id: item })
+                if (!contact) {
+                    console.log(`contact ${item} not found`)
+                } else {
+                    item = contact._id;
+                    contactArr.push(item)
+                }
+
+            } catch (error) {
+                console.log(`contact ${item} not found`)
+            }
+        })
+        await Promise.all(promises);
+
+        campaign.contacts.push(...contactArr)
+
+        try {
+            const campaignSaved = await campaign.save()
+            return res.status(200).json({ campaign: campaignSaved })
+
+
+        } catch (error) {
+            return res.status(400).json({ error })
+
+        }
+
+    }
+
+    async delContact(req, res) {
+        const id = req.params.campaign_id;
+        let { contact } = req.body
+        let highArr = [];
+        let campaign = {}
+        try {
+            campaign = await campaignModel.findOne({ _id: id })
+            if (!campaign) {
+                return res.status(404).json({
+                    message: 'No such campaign'
+                });
+            }
+
+            console.log('antes', campaign.contacts)
+            if (campaign.contacts.length > 0) {
+                const promise = contact.map(async element => {
+                    const found = await campaign.contacts.findIndex(contact => contact.toString() === element)
+                    if (found !== undefined && found !== -1) {
+                        campaign.contacts.splice(found, 1)
+                    }
+                });
+                await Promise.all(promise)
+                console.log('depois', campaign.contact)
+
+                const campaignSaved = await campaign.save()
+                return res.status(200).json({ campaign: campaignSaved })
+            }
+        } catch (e) {
+            return res.status(500).json({
+                message: 'Error when getting campaign',
+                error: e
+            });
+        }
+    }
+
+
+
+
 
     /**
      * campaignController.update()
@@ -232,5 +483,7 @@ class campaignController {
             });
         }
     }
+
+
 };
 module.exports = new campaignController();
