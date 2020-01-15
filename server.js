@@ -17,6 +17,8 @@ const upload = require('./src/routes/api/upload');
 const category = require('./src/routes/api/category');
 const user = require('./src/routes/api/user');
 const contact = require('./src/routes/api/contact');
+const webhook = require('./src/routes/api/webhook');
+
 
 
 
@@ -48,6 +50,7 @@ app.use('/campaigns' , campaign);
 // app.use('/shopcart' , shopcart);
 // app.use('/auth' , auth);
 app.use('/upload', upload)
+app.use('/webhook' , webhook)
 
 
 const PORT = process.env.PORT || 5000;

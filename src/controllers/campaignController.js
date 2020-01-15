@@ -33,7 +33,11 @@ class campaignController {
         try {
             const campaignsByName = await campaignModel.find({ name: { $regex: query, $options: 'i' } })
             if (campaignsByName.length == 0) {
-                const campaignsByDescription = await campaignModel.find({ description: { $regex: query, $options: 'i' } })
+                const campaignsByDescription = await campaignModel.find({ description: { $regex: query, $options: 'i' } }).populate({
+                    path:'contacts',
+                    model:'contact'
+
+                })
                 if (campaignsByDescription.length == 0) {
                     return res.status(404).json({ message: "not found" });
                 } else {

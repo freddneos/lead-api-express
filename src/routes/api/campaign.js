@@ -1,6 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var campaignController = require('../../controllers/campaignController.js');
+const {check,validationresult} = require('express-validator');
+
+
+/*
+ * GET
+ */
+router.get('/search/:query',[
+    check('query', '!query must be at least 4 characters')
+        .isLength({ min: 4 })
+], campaignController.find);
+
 
 /*
  * GET
