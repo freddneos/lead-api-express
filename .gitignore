@@ -3,4 +3,3 @@ default.json
 config/default.json
 /config/default.json
 .env
-heapdump*
