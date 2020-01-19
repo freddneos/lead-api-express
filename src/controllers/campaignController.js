@@ -46,7 +46,7 @@ class campaignController {
             } else {
                 campaigns = campaignsByName;
             }
-            res.status(200).json(campaigns)
+            res.status(200).json({data:campaigns})
         } catch (e) {
             return res.status(500).json({ error: e })
         }
@@ -70,7 +70,7 @@ class campaignController {
                     message: 'No such campaign'
                 });
             }
-            return res.json(campaign);
+            return res.json({data:campaign});
         } catch (e) {
             return res.status(500).json({
                 message: 'Error when getting campaign.',
@@ -107,7 +107,7 @@ class campaignController {
         })
         try {
             const campaignSaved = await campaign.save()
-            return res.status(200).json({ campaign: campaignSaved })
+            return res.status(200).json({ data: campaignSaved })
 
         } catch (e) {
             res.status(400).json({ errors: [{ msg: e }] })

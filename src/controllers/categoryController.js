@@ -37,7 +37,7 @@ class CategoryController {
                     message: 'No such category'
                 });
             }
-            return res.json(category);
+            return res.json({data:category});
         }catch(e){
             return res.status(500).json({
                 message: 'Error when getting category.',
@@ -61,7 +61,7 @@ class CategoryController {
         })
         try {
            const  categorySaved = await category.save()
-           return res.status(200).json({category:categorySaved}) 
+           return res.status(200).json({data:categorySaved}) 
 
         }catch(e){
             res.status(400).json({errors:[{msg:e}]})
@@ -98,7 +98,7 @@ class CategoryController {
                     });
                 }
 
-                return res.json(category);
+                return res.json({data:category});
             });
         });
     }

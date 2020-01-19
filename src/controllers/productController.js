@@ -103,7 +103,7 @@ class ProductController {
         })
         try {
             const productSaved = await product.save()
-            return res.status(200).json({ product: productSaved })
+            return res.status(200).json({ data: productSaved })
 
         } catch (e) {
             res.status(400).json({ errors: [{ msg: e }] })
@@ -155,7 +155,7 @@ class ProductController {
 
         try {
             const result = await product.save()
-            return res.json(result);
+            return res.json({data:result});
         } catch (e) {
             console.log('error -> ', e)
             return res.status(500).json({

@@ -63,7 +63,7 @@ class UserController {
         })
         try {
            const  userSaved = await user.save()
-           return res.status(200).json({user:userSaved}) 
+           return res.status(200).json({data:userSaved}) 
 
         }catch(e){
             res.status(400).json({errors:[{msg:e}]})
@@ -102,7 +102,7 @@ class UserController {
                     });
                 }
 
-                return res.json(user);
+                return res.json({data:user});
             });
         });
     }

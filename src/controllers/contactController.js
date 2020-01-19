@@ -38,7 +38,7 @@ class contactController {
                     message: 'No such contact'
                 });
             }
-            return res.json(contact);
+            return res.json({data:contact});
         } catch (e) {
             return res.status(500).json({
                 message: 'Error when getting contact.',
@@ -82,7 +82,7 @@ class contactController {
         })
         try {
             const contactSaved = await contact.save()
-            return res.status(200).json({ contact: contactSaved })
+            return res.status(200).json({ data: contactSaved })
 
         } catch (e) {
             res.status(400).json({ errors: [{ msg: e }] })
@@ -121,7 +121,7 @@ class contactController {
                     });
                 }
 
-                return res.json(contact);
+                return res.json({data:contact});
             });
         });
     }
