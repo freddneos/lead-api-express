@@ -1,6 +1,7 @@
+require('dotenv/config');
 const util = require('util');
-const mainUrl = 'http://v4.chatpro.com.br/chatpro-u1csmyssf9/api/v1'
-const token = '66bd75216dfe237b871952887bd0b7fd0dfd924b'
+const mainUrl = process.env.WHATSAPP_URL
+const token = process.env.WHATSAPP_TOKEN
 
 const headers = {
     'cache-control': 'no-cache',
