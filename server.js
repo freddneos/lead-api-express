@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === "production") {
 //connect to database
 connectDB();
 
-app.get('api/', (req, res) => res.send('API running , Hello world!'));
+app.get('api/v1/', (req, res) => res.send('API running , Hello world!'));
 app.use('api/v1/users', user);
 app.use('api/v1/categories', category);
 app.use('api/v1/contacts' , contact);
