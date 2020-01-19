@@ -18,7 +18,7 @@ class campaignController {
     async list(req, res) {
         try {
             const campaigns = await campaignModel.find().populate('product')
-            return res.json({ campaigns: campaigns });
+            return res.json({ data: campaigns });
         } catch (e) {
             return res.status(500).json({ error: e })
         }

@@ -15,7 +15,7 @@ class contactController {
     async list(req, res) {
         try {
             const contacts = await contactModel.find()
-            return res.json({ contacts: contacts });
+            return res.json({ data: contacts });
         } catch (e) {
             return res.status(500).json({ error: e })
         }

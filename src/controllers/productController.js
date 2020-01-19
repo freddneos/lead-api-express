@@ -17,7 +17,7 @@ class ProductController {
     async list(req, res) {
         try {
             const products = await productModel.find().populate('category', 'name')
-            return res.json({ products: products });
+            return res.json({ data: products });
         } catch (e) {
             return res.status(500).json({ error: e })
         }

@@ -1,8 +1,10 @@
+require('appmetrics-dash').attach()
 const express = require('express');
 const app = express();
 const multiparty = require('connect-multiparty');
 const bodyParser = require('body-parser')
 const path = require('path')
+const cors = require('cors')
 require('dotenv/config');
 
 
@@ -19,9 +21,7 @@ const user = require('./src/routes/api/user');
 const contact = require('./src/routes/api/contact');
 const webhook = require('./src/routes/api/webhook');
 
-
-
-
+app.use(cors())
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

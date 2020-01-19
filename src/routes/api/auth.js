@@ -5,7 +5,7 @@ var userController = require('../controllers/userController.js');
 /*
  * GET
  */
-router.get('/', userController.list);
+router.get('/', authController.authenticate);
 
 /*
  * GET

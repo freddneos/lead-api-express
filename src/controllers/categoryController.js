@@ -14,7 +14,7 @@ class CategoryController {
     async list(req, res) {
         try {
             const categorys = await categoryModel.find()
-            return res.json({ categorys: categorys });
+            return res.json({ data: categorys });
         } catch (e) {
             return res.status(500).json({ error: e })
         }

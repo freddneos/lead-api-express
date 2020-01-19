@@ -37,9 +37,7 @@ class uploadController {
         var host = process.env.APP_HOST || `http://${req.hostname}:${process.env.APP_PORT||5000}`
         var imgUrl = `${host}/${subfolder}${newName}`;
         try {
-            console.log('temp->',temporario)
-            console.log('new->',novo)
-            console.log('img->' , imgUrl)
+            
             await rename(temporario, novo)
             product.image = imgUrl;
             const editedProduct = await product.save()
