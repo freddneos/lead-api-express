@@ -178,8 +178,6 @@ class campaignController {
 
     }
 
-
-
     async delHighlight(req, res) {
         const id = req.params.campaign_id;
         let { highlight } = req.body

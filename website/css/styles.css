@@ -24,7 +24,7 @@ Table Of Contents:
 15. Copyright
 16. Back To Top Button
 17. Extra Pages
-18. Sign Up and Log In Pages
+18. Sign Up and ENTRAR Pages
 19. Media Queries
 ******************************************/
 
@@ -1579,7 +1579,7 @@ a:hover.back-to-top {
 
 
 /****************************************/
-/*     18. Sign Up and Log In Pages     */
+/*     18. Sign Up and ENTRAR Pages     */
 /****************************************/
 .ex-2-header {
 	padding-top: 9rem;
@@ -1704,7 +1704,7 @@ a:hover.back-to-top {
 	/* end of extra pages */
 
 
-	/* Sign Up And Log In Pages */
+	/* Sign Up And ENTRAR Pages */
 	.ex-2-header {
 		padding-top: 11rem;
 	}
@@ -1712,7 +1712,7 @@ a:hover.back-to-top {
 	.ex-2-header .form-container {
 		padding: 2.25rem 1.75rem 1.25rem 1.75rem;
 	}
-	/* end of sign up and log in pages */
+	/* end of sign up and ENTRAR pages */
 }
 /* end of min-width width 768px */
 

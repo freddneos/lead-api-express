@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const whatsapp = require('../../services/whatsappService')
+let email = require('../../services/emailService')
 
 /*
  * GET
@@ -36,11 +37,19 @@ router.post('/', (req, res) => {
     return res.status(200);
 });
 
-router.post('/send_message',async  (req, res) => {
+router.post('/send_message', async (req, res) => {
     const { message, number } = req.body
     //await whatsapp.getStatus()
-    const ret =  await whatsapp.reload() // (message, number)
-    return res.status(200).json({data:ret});
+    const ret = await whatsapp.reload() // (message, number)
+    return res.status(200).json({ data: ret });
+
+});
+
+
+router.post('/send_email', async (req, res) => {
+    const {to , message ,subject} = req.body
+    const ret = await email.sendEmail(to , message ,subject) // (message, number)
+    return res.status(200).json({ data: ret });
 
 });
 

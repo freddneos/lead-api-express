@@ -47,7 +47,6 @@ class ProductController {
         }
 
     }
-
     /**
      * productController.show()
      */
