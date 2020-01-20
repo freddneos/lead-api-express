@@ -65,7 +65,7 @@ class ProductController {
                     message: 'No such product'
                 });
             }
-            return res.json(product);
+            return res.json({data:product});
         } catch (e) {
             return res.status(500).json({
                 message: 'Error when getting product.',
