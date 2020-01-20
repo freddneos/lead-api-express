@@ -1,5 +1,6 @@
 require('appmetrics-dash').attach()
 require('dotenv/config');
+
 const express = require('express');
 const app = express();
 const multiparty = require('connect-multiparty');
@@ -37,6 +38,7 @@ if (process.env.NODE_ENV === "production") {
     app.use('/apidocs', express.static("docs"));
     app.use('/', express.static("website"));
 }
+
 //connect to database
 connectDB();
 
