@@ -16,13 +16,15 @@ class uploadController {
             const product_id = req.body.product_id
             console.log(product_id)
             subfolder = 'files/products/'
-            try {
-                product = await productModel.findOne({ _id: product_id })
-                if (!product) {
-                    return res.status(400).json({ message: 'product does not exist' })
+            if (!product_id) {
+                try {
+                    product = await productModel.findOne({ _id: product_id })
+                    if (!product) {
+                        return res.status(400).json({ message: 'product does not exist' })
+                    }
+                } catch (e) {
+                    return res.status(400).json({ message: "error to find a product", error: e })
                 }
-            } catch (e) {
-                return res.status(400).json({ message: "error to find a product", error: e })
             }
         } else {
             res.status(400).json({ message: 'please review your request body , type must be (product , contact or user)' })
@@ -36,11 +38,13 @@ class uploadController {
         var novo = newPlace;
         var host = process.env.APP_HOST || `http://${req.hostname}:${process.env.APP_PORT || 5000}`
         var imgUrl = `${host}/${subfolder}${newName}`;
-        try {
 
+        try {
             await rename(temporario, novo)
-            product.image = imgUrl;
-            const editedProduct = await product.save()
+            if (!product_id) {
+                product.image = imgUrl;
+                const editedProduct = await product.save()
+            }
             res.json({ message: "enviado com sucesso.", file: product.image });
         } catch (e) {
             return res.status(400).json({ message: "error on rename", error: e })
