@@ -22,8 +22,8 @@ const webhook = require('./src/routes/api/webhook');
 // const auth = require('./src/routes/api/auth');
 
 app.use(cors({
-    exposedHeaders: ['content-range'],
-   }));
+    exposedHeaders: ['Content-range']
+}));
 
 app.use(cors())
 app.use(express.json());
@@ -48,11 +48,11 @@ connectDB();
 app.get('/api/v1/', (req, res) => res.send('API running , Hello world!'));
 app.use('/api/v1/users', user);
 app.use('/api/v1/categories', category);
-app.use('/api/v1/contacts' , contact);
+app.use('/api/v1/contacts', contact);
 app.use('/api/v1/products', product);
-app.use('/api/v1/campaigns' , campaign);
+app.use('/api/v1/campaigns', campaign);
 app.use('/api/v1/upload', upload)
-app.use('/api/v1/webhook' , webhook)
+app.use('/api/v1/webhook', webhook)
 // app.use('api/v1/order' , order);
 // app.use('api/v1/shopcart' , shopcart);
 // app.use('api/v1/auth' , auth);

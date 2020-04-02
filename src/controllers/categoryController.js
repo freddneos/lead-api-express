@@ -12,24 +12,22 @@ class CategoryController {
      * categoryController.list()
      */
     async list(req, res) {
-        let { page, limit, offset } = req.query
+        let { pagination_page, pagination_per_page } = req.query
 
-        limit = limit ? limit : 5;
-        offset = offset ? offset : 0;
-        page = page ? page : 1;
+        pagination_per_page = pagination_per_page ? pagination_per_page : 5;
+        pagination_page = pagination_page ? pagination_page : 1;
 
 
         const options = {
-            page,
-            limit,
-            offset,
+            pagination_page,
+            pagination_per_page,
         }
 
         try {
             categoryModel.paginate({}, options, (err, result) => {
             
-                res.set('Content-range' , `category ${0}-${result.limit}/${result.totalDocs}`)
-                return res.json({ data: result.docs , perPage:result.limit ,page:result.page , totalPages: result.totalPages ,total:result.totalDocs });
+                res.set('Content-range' , `category ${0}-${result.perPage}/${result.totalDocs}`)
+                return res.json({ data: result.docs , perPage:result.perPage ,page:result.page , totalPages: result.totalPages ,total:result.totalDocs });
             })
             //return res.json({ data: categorys });
         } catch (e) {
