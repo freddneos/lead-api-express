@@ -21,6 +21,9 @@ const webhook = require('./src/routes/api/webhook');
 // const order = require('./src/routes/api/order');
 // const auth = require('./src/routes/api/auth');
 
+app.use(cors({
+    exposedHeaders: ['content-range'],
+   }));
 
 app.use(cors())
 app.use(express.json());

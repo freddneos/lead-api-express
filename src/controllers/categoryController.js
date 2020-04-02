@@ -1,5 +1,5 @@
 const categoryModel = require('../models/categoryModel.js');
-const {validationResult} = require('express-validator');
+const { validationResult } = require('express-validator');
 
 /**
  * categoryController.js
@@ -12,9 +12,26 @@ class CategoryController {
      * categoryController.list()
      */
     async list(req, res) {
+        let { page, limit, offset } = req.query
+
+        limit = limit ? limit : 5;
+        offset = offset ? offset : 0;
+        page = page ? page : 1;
+
+
+        const options = {
+            page,
+            limit,
+            offset,
+        }
+
         try {
-            const categorys = await categoryModel.find()
-            return res.json({ data: categorys });
+            categoryModel.paginate({}, options, (err, result) => {
+            
+                res.set('Content-range' , `category ${0}-${result.limit}/${result.totalDocs}`)
+                return res.json({ data: result.docs , perPage:result.limit ,page:result.page , totalPages: result.totalPages ,total:result.totalDocs });
+            })
+            //return res.json({ data: categorys });
         } catch (e) {
             return res.status(500).json({ error: e })
         }
@@ -26,8 +43,8 @@ class CategoryController {
     async show(req, res) {
         console.log(req.body);
         const errors = validationResult(req)
-        if(!errors.isEmpty()){
-            return res.status(400).json({errors:errors.array()})
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
         }
         const id = req.params.id;
         try {
@@ -37,8 +54,8 @@ class CategoryController {
                     message: 'No such category'
                 });
             }
-            return res.json({data:category});
-        }catch(e){
+            return res.json({ data: category });
+        } catch (e) {
             return res.status(500).json({
                 message: 'Error when getting category.',
                 error: e
@@ -52,19 +69,19 @@ class CategoryController {
     async create(req, res) {
         console.log(req.body);
         const errors = validationResult(req)
-        if(!errors.isEmpty()){
-            return res.status(400).json({errors:errors.array()})
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
         }
         const category = new categoryModel({
             name: req.body.name,
             description: req.body.description,
         })
         try {
-           const  categorySaved = await category.save()
-           return res.status(200).json({data:categorySaved}) 
+            const categorySaved = await category.save()
+            return res.status(200).json({ data: categorySaved })
 
-        }catch(e){
-            res.status(400).json({errors:[{msg:e}]})
+        } catch (e) {
+            res.status(400).json({ errors: [{ msg: e }] })
         }
     }
 
@@ -89,7 +106,7 @@ class CategoryController {
             category.id = req.body.id ? req.body.id : category.id;
             category.name = req.body.name ? req.body.name : category.name;
             category.description = req.body.description ? req.body.description : category.description;
-            
+
             category.save(function (err, category) {
                 if (err) {
                     return res.status(500).json({
@@ -98,7 +115,7 @@ class CategoryController {
                     });
                 }
 
-                return res.json({data:category});
+                return res.json({ data: category });
             });
         });
     }
@@ -113,7 +130,8 @@ class CategoryController {
             return res.status(204).json();
         } catch (e) {
             return res.status(500).json({
-                error: `Error when deleting the category.${e}`            });
+                error: `Error when deleting the category.${e}`
+            });
         }
     }
 };
