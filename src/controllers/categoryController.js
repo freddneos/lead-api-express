@@ -26,8 +26,8 @@ class CategoryController {
         try {
             categoryModel.paginate({}, options, (err, result) => {
             
-                res.set('Content-range' , `category ${0}-${result.perPage}/${result.totalDocs}`)
-                return res.json({ data: result.docs , perPage:result.perPage ,page:result.page , totalPages: result.totalPages ,total:result.totalDocs });
+                res.set('Content-range' , `category ${0}-${pagination_per_page}/${result.totalDocs}`)
+                return res.json({ data: result.docs , perPage:result.limit ,page:result.page , totalPages: result.totalPages ,total:result.totalDocs });
             })
             //return res.json({ data: categorys });
         } catch (e) {
