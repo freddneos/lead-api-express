@@ -4,3 +4,4 @@ config/default.json
 /config/default.json
 .env
 heapdump*
+package-lock.json
