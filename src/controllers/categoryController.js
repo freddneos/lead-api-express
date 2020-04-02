@@ -19,15 +19,15 @@ class CategoryController {
 
 
         const options = {
-            pagination_page,
-            pagination_per_page,
+            page: pagination_page,
+            limit: pagination_per_page,
         }
 
         try {
             categoryModel.paginate({}, options, (err, result) => {
-            
-                res.set('Content-range' , `category ${0}-${pagination_per_page}/${result.totalDocs}`)
-                return res.json({ data: result.docs , perPage:result.limit ,page:result.page , totalPages: result.totalPages ,total:result.totalDocs });
+
+                res.set('Content-range', `category ${0}-${pagination_per_page}/${result.totalDocs}`)
+                return res.json({ data: result.docs, perPage: result.limit, page: result.page, totalPages: result.totalPages, total: result.totalDocs });
             })
             //return res.json({ data: categorys });
         } catch (e) {
